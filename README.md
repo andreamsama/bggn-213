@@ -1,2 +1,2 @@
 # bggn-213
-Bioinformatics class at UCSD
+Bioinformatics class at U C San Diego 
