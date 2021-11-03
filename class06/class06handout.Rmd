@@ -248,4 +248,6 @@ Make a boxplot
 boxplot(scores)
 ```
 
+#Homework question 6:
+
 

@@ -64,7 +64,7 @@ points(km$centers, col="blue", pch=15, cex=2)
 We will use the `hclust()` function on the same data as before and see how this method works.
 
 ```{r}
-hclust(data)
+#hclust(data)
 ```
 gives an error, needs a distance. 
 
