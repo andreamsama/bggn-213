@@ -2,9 +2,7 @@
 title: "mini_project"
 author: "Andrea Sama (A59010582)"
 date: "10/27/2021"
-output:
-  html_document:
-    df_print: paged
+output: github_document
 ---
 ```{r}
 #read.csv("WisconsinCancer.csv")
