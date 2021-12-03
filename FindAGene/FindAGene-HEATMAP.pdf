@@ -1,0 +1,47 @@
+---
+title: "FindAGene"
+author: "Andrea Sama (A59010582)"
+date: "11/9/2021"
+output: html_document
+---
+
+trying to get sequence alignment data into R
+
+```{r}
+library(bio3d)
+aln <- read.fasta("FindAGene-Alignment.fst")
+aln
+
+```
+
+trying to make sequence identity matrix
+```{r}
+seq.id <- seqidentity(aln)
+seq.id
+```
+plotting this as a heat map
+
+```{r}
+plot.dmat(seq.id, color.palette = mono.colors)
+```
+
+tryna get the labels right
+
+```{r}
+ids <- basename.pdb(aln$id)
+ids
+plot.dmat(seq.id, color.palette = mono.colors, labels=ids)
+
+```
+trying corrplot instead
+```{r}
+library(corrplot)
+corrplot(seq.id)
+```
+ok trying just heatmap
+
+```{r}
+heatmap(seq.id)
+```
+welp youre dumb and yay it worked!
+

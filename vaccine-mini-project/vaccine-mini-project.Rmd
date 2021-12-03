@@ -1,0 +1,249 @@
+---
+title: "vaccine-mini-project"
+author: "Andrea Sama (A59010582)"
+date: "11/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Comparing vaccination rates from around San Diego.
+
+```{r}
+vax <- read.csv("covid19vaccinesbyzipcode_test.csv")
+
+tail(vax)
+```
+Question 1: The column "persons_fully_vaccinated" details the number of people fully vaccinated
+
+Question 2: The column "zip_code_tabulation_area" details the zip code tabulation area.
+
+Question 3: The earliest date in this data set is January 5th 2021
+
+Question 4: The latest date in this data set is November 23rd 2021/
+
+```{r}
+#skimr::skim(vax)
+```
+
+Q5: There are nine numeric columns in this data set. 
+
+Q6: There are 8355 NA values in the persons_fully_vaccinated column.
+
+Q7: The percent of persons_fully_vaccinated that are missing is about 10%
+
+```{r}
+#install.packages("lubridate")
+library(lubridate)
+```
+
+```{r}
+today()
+```
+
+```{r}
+# Specify that we are using the year-month-day format
+vax$as_of_date <- ymd(vax$as_of_date)
+```
+
+
+```{r}
+today() - vax$as_of_date[1]
+```
+How much time since the first vaccination reported.
+
+```{r}
+vax$as_of_date[nrow(vax)] - vax$as_of_date[1]
+
+```
+
+```{r}
+vax$as_of_date[82908] - vax$as_of_date[1]
+```
+
+```{r}
+today() - vax$as_of_date[nrow(vax)]
+```
+
+5 days have passed.
+
+
+```{r}
+(vax$as_of_date[nrow(vax)]-vax$as_of_date[1])/7
+```
+46 unique dates in the dataset.
+
+#Working with ZIP codes
+
+```{r}
+#install.packages("zipcodeR")
+library(zipcodeR)
+```
+
+```{r}
+geocode_zip('92037')
+```
+
+```{r}
+zip_distance('92037','92109')
+```
+
+```{r}
+reverse_zipcode(c('92037', "92109") )
+
+```
+
+```{r}
+# Pull data for all ZIP codes in the dataset
+zipdata <- reverse_zipcode( vax$zip_code_tabulation_area )
+zipdata
+
+```
+```{r}
+# Subset to San Diego county only areas
+library(dplyr)
+
+sd <- filter(vax, county == "San Diego")
+
+nrow(sd)
+```
+
+
+```{r}
+unique(sd$zip_code_tabulation_area)
+```
+
+```{r}
+length(unique(sd$zip_code_tabulation_area))
+```
+
+
+There are 107 unique zip codes in San Diego County.
+
+
+```{r}
+which.max(sd$age12_plus_population)
+
+sd[60,]
+```
+
+The 92154 zip code has the highest age 12+ population.
+
+
+```{r}
+library(dplyr)
+
+sd.date <- filter(vax, county == "San Diego", as_of_date == "2021-11-16")
+
+head(sd.date)
+
+
+
+```
+```{r}
+mean(sd.date$percent_of_population_fully_vaccinated, na.rm=TRUE)
+```
+
+```{r}
+sd.date.na <-na.omit(sd.date)
+head(sd.date.na)
+
+mean(sd.date.na$percent_of_population_fully_vaccinated)
+```
+
+
+
+```{r}
+library(ggplot2)
+
+ggplot(sd.date, aes(sd.date$percent_of_population_fully_vaccinated, )) + geom_histogram()
+
+
+
+```
+
+
+#Focus on UCSD/La Jolla
+
+
+```{r}
+ucsd <- filter(sd, zip_code_tabulation_area=="92037")
+ucsd[1,]$age5_plus_population
+```
+
+
+```{r}
+ggplot(ucsd) +
+  aes(ucsd$as_of_date,
+      ucsd$percent_of_population_fully_vaccinated) +
+  geom_point() +
+  geom_line(group=1) +
+  ylim(c(0,1)) +
+  labs(x="Date", y="Percent Vaccinated")
+```
+```{r}
+# Subset to all CA areas with a population as large as 92037
+vax.36 <- filter(vax, age5_plus_population > 36144 &
+                as_of_date == "2021-11-16")
+
+head(vax.36)
+```
+
+```{r}
+mean(vax.36$percent_of_population_fully_vaccinated)
+```
+
+```{r}
+ggplot(ucsd) +
+  aes(ucsd$as_of_date,
+      ucsd$percent_of_population_fully_vaccinated) +
+  geom_point() +
+  geom_line(group=1) +
+  ylim(c(0,1)) +
+  labs(x="Date", y="Percent Vaccinated")+
+  geom_hline(yintercept=0.6640413, color="red", linetype= "dashed")
+```
+
+```{r}
+fivenum(vax.36$percent_of_population_fully_vaccinated)
+mean(vax.36$percent_of_population_fully_vaccinated)
+```
+
+```{r}
+ggplot(vax.36) +
+  aes(vax.36$percent_of_population_fully_vaccinated) +
+  geom_histogram() 
+```
+
+```{r}
+#vax %>% filter(as_of_date == "2021-11-16") %>%  
+  #filter(zip_code_tabulation_area=="92040") %>%
+  #select(percent_of_population_fully_vaccinated)
+```
+
+Below the average value.
+
+```{r}
+vax.36.all <- filter(vax, age5_plus_population > 36144)
+
+
+ggplot(vax.36.all) +
+  aes(as_of_date,
+      percent_of_population_fully_vaccinated, 
+      group=zip_code_tabulation_area) +
+  geom_line(alpha=0.2, color="blue") +
+  ylim(0, 1.00) +
+  labs(x="Date", y="Percent Vaccinated",
+       title="Vaccination rate across California",
+       subtitle="only areas with a population above 36k are shown") +
+  geom_hline(yintercept = 0.6640413, linetype= "dashed")
+```
+
+I think I would prefer for next weeks classes to be online, especially with the Omicron variant surge. 
+
+
+
+
+
+
+

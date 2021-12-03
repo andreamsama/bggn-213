@@ -1,0 +1,35 @@
+---
+title: "class_19"
+author: "Andrea Sama (A59010582)"
+date: "12/1/2021"
+output: html_document
+---
+
+
+```{r}
+data<-read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+```
+
+
+```{r}
+table(data)
+
+nrow(data)
+```
+
+```{r}
+9/64
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
