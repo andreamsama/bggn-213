@@ -2491,8 +2491,8 @@ head(pdb$atom)
 m<-nma(pdb)
 ```
 
-    ##  Building Hessian...     Done in 0.073 seconds.
-    ##  Diagonalizing Hessian...    Done in 0.162 seconds.
+    ##  Building Hessian...     Done in 0.037 seconds.
+    ##  Diagonalizing Hessian...    Done in 0.126 seconds.
 
 ``` r
 plot(m)

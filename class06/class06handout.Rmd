@@ -2,7 +2,7 @@
 title: 'Class 6: R function'
 author: "Andrea Sama (A59010582)"
 date: "10/15/2021"
-output: pdf_document
+output: github_document
 ---
 
 ## Quick Rmarkdown intro
