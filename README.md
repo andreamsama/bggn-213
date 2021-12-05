@@ -4,7 +4,7 @@ Bioinformatics class at U C San Diego Fall 2021
 
 ## Contents: 
 
-- Introduction to R [source]
+- [1.Introduction to R](https://github.com/andreamsama/bggn-213/blob/main/class04%20copy/class04.md)
 - [2. Data visualization with ggplot2](https://github.com/andreamsama/bggn-213/blob/main/class05%20copy/class05-script.md)
 - [3. R functions](https://github.com/andreamsama/bggn-213/blob/main/class06/class06handout.md)
 - [4. Machine Learning 1](https://github.com/andreamsama/bggn-213/blob/main/class08/Machine-Learning-class08.md)
